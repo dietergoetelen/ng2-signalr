@@ -1,5 +1,5 @@
 import { ISignalRConnection } from './i.signalr.connection';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { BroadcastEventListener } from '../eventing/broadcast.event.listener';
 import { ConnectionStatus } from './connection.status';
 import { NgZone } from '@angular/core';
@@ -190,7 +190,7 @@ export class SignalRConnection implements ISignalRConnection {
     }
 
     private wireUpStatusEventsAsObservable(): Observable<ConnectionStatus> {
-        const sStatus = new Subject<ConnectionStatus>();
+        const sStatus = new BehaviorSubject<ConnectionStatus>(new ConnectionStatus(0));
         // aggregate all signalr connection status handlers into 1 observable.
         // handler wire up, for signalr connection status callback.
         this._jConnection.stateChanged((change: any) => {
